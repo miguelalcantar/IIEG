@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Page Title</title>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js'></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+  <script src="assets/Dashboard/Charts/main.js"></script>
+</head>
+<body>
+</div>
+  <div class="container py-4">
+    <h1>Reporte de Accidentes Automovilísticos en la ZMG</h1><hr>
+    <div class="row py-4">
+      <div class="col-6">
+        <h3>Accidentes automovilísticos al mes</h3>
+        <canvas id="month"></canvas>
+      </div>  
+      <div class="col-6">
+        <h3>Causas</h3>
+         <canvas id="cause"></canvas>
+      </div>
+    </div>
+    <div class="row py-4">
+      <div class="col-6">
+        <h3>Accidentes por rango de edades</h3>
+        <canvas id="age"></canvas>
+      </div>  
+      <div class="col-6">
+        <h3>Accidentes por rango de hora</h3>
+        <canvas id="hour"></canvas>
+      </div> 
+    </div>
+    <div class="row py-4">
+      <div class="col-6">
+        <h3>Género</h3>
+        <canvas id="gender"></canvas>
+      </div>
+      <div class="col-6">
+        <h3>Tipo de vehículo</h3>
+        <canvas id="car"></canvas>
+      </div>
+      <div class="col-10">
+        <h3>Tipo de vehículo</h3>
+        <canvas id="injured"></canvas>
+      </div>
+    </div>
+  </div>
+</body>
+<script> 
+  $.ajax({
+      type: "GET",
+      // url: 'http://192.168.43.208:5000/charts',
+      url: 'http://127.0.0.1:5000/charts',
+      success: function(response){
+          console.log(response.data);
+          line(monthLabel, response.data.month, "month", "Accidentes automovilísticos mensuales");
+          horizontalBar(hourLabel, response.data.hour, "hour","Accidentes por hora");
+          horizontalBar(response.data.car_type.label,response.data.car_type.value,"car","Tipo de auto");
+          bar(ageLabel,response.data.age,"age","Rangos de edades");
+          horizontalBar(response.data.cause.label,response.data.cause.count,"cause","Causas de los Accidentes");
+          pie(['Hombres','Mujeres'],response.data.gender,"gender","Accidentes por género")
+          pie(response.data.injured.label,response.data.injured.value,"injured","Accidentado");
+     }
+  });
+</script>
+</html>
